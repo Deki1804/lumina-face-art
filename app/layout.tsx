@@ -9,14 +9,15 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "LUMINA Face Art | Oslikavanje lica za rođendane i evente",
-  description:
-    "Bajkovito oslikavanje lica za dječje rođendane, evente i posebne prigode.",
+  title: {
+    default: "LUMINA Face Art",
+    template: "%s | LUMINA Face Art",
+  },
+  description: "Oslikavanje lica za rođendane i evente",
   metadataBase: new URL(profile.websiteUrl),
   openGraph: {
-    title: "LUMINA Face Art | Oslikavanje lica za rođendane i evente",
-    description:
-      "Bajkovito oslikavanje lica za dječje rođendane, evente i posebne prigode.",
+    title: "LUMINA Face Art",
+    description: "Oslikavanje lica za rođendane i evente",
     url: profile.websiteUrl,
     siteName: profile.brand,
     locale: "hr_HR",
@@ -33,11 +34,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "LUMINA Face Art",
-    description:
-      "Bajkovito oslikavanje lica za dječje rođendane, evente i posebne prigode.",
-  },
-  icons: {
-    icon: "/images/logo.png",
+    description: "Oslikavanje lica za rođendane i evente",
   },
 };
 

@@ -6,7 +6,7 @@ import { galleryImages } from "@/lib/gallery";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Galerija radova | LUMINA Face Art",
+  title: "Galerija radova",
   description:
     "Primjeri oslikavanja lica i čarobnih detalja za rođendane i evente.",
 };
