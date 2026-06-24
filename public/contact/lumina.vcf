@@ -1,0 +1,16 @@
+BEGIN:VCARD
+VERSION:3.0
+PRODID:-//LUMINA Face Art//HR
+N;CHARSET=UTF-8:Vižintin;Melita;Zakinja;;
+FN;CHARSET=UTF-8:Melita Zakinja Vižintin
+ORG;CHARSET=UTF-8:LUMINA Face Art
+TITLE;CHARSET=UTF-8:Oslikavanje lica za rođendane i evente
+TEL;TYPE=CELL,VOICE:+38598304317
+EMAIL;TYPE=INTERNET:lumina.faceart@gmail.com
+URL:https://luminafaceart.vercel.app
+item1.URL:https://www.instagram.com/luminafaceart
+item1.X-ABLabel:Instagram
+item2.URL:https://facebook.com/luminafaceart
+item2.X-ABLabel:Facebook
+NOTE;CHARSET=UTF-8:TODO - zamijeni URL:https://luminafaceart.vercel.app s pravim Vercel URL-om nakon deploya.
+END:VCARD
