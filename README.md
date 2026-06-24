@@ -154,6 +154,7 @@ Format je optimiziran za iPhone i Android (UTF-8, vCard 3.0).
 | Datoteka | Namjena |
 |---|---|
 | `public/images/logo.png` | Glavni brand logo (hero, favicon, OG) |
+| `public/images/favicon-source.png` | Izvorna favicon slika (L monogram) |
 | `public/images/card-front.png` | Referenca — prednja vizitka |
 | `public/images/card-back.png` | Referenca — stražnja vizitka |
 | `public/images/gallery/` | Folder za slike galerije |

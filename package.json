@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "gallery": "node scripts/generate-gallery.mjs",
-    "qr": "node scripts/generate-qr.mjs"
+    "qr": "node scripts/generate-qr.mjs",
+    "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "next": "^15.3.3",
