@@ -1,10 +1,36 @@
 import Image from "next/image";
 import Link from "next/link";
 import { EmptyGalleryState } from "@/components/EmptyGalleryState";
-import { galleryImages } from "@/lib/gallery";
+import { galleryGroups, type GalleryImage } from "@/lib/gallery";
+
+function getPreviewImages(limit = 4): GalleryImage[] {
+  const activeGroups = galleryGroups.filter((group) => group.images.length > 0);
+  if (activeGroups.length === 0) return [];
+
+  const preview: GalleryImage[] = [];
+  let round = 0;
+
+  while (preview.length < limit) {
+    let added = false;
+
+    for (const group of activeGroups) {
+      const image = group.images[round];
+      if (image) {
+        preview.push(image);
+        added = true;
+        if (preview.length >= limit) break;
+      }
+    }
+
+    if (!added) break;
+    round++;
+  }
+
+  return preview;
+}
 
 export function GalleryPreview() {
-  const previewImages = galleryImages.slice(0, 4);
+  const previewImages = getPreviewImages(4);
   const hasImages = previewImages.length > 0;
 
   return (

@@ -1,28 +1,72 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { EmptyGalleryState } from "@/components/EmptyGalleryState";
-import type { GalleryImage } from "@/lib/gallery";
+import type { GalleryGroup, GalleryImage } from "@/lib/gallery";
 
 type GalleryGridProps = {
-  images: GalleryImage[];
+  groups: GalleryGroup[];
 };
 
-export function GalleryGrid({ images }: GalleryGridProps) {
+function ImageTile({
+  image,
+  index,
+  onOpen,
+}: {
+  image: GalleryImage;
+  index: number;
+  onOpen: (index: number) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(index)}
+      className="group relative aspect-square overflow-hidden rounded-xl border border-sage/30 shadow-[0_2px_12px_rgba(168,197,160,0.15)] transition-shadow hover:shadow-[0_4px_20px_rgba(168,197,160,0.3)] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/50"
+    >
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        className="object-cover transition-transform duration-300 group-hover:scale-105"
+        sizes="(max-width: 640px) 45vw, 220px"
+      />
+    </button>
+  );
+}
+
+export function GalleryGrid({ groups }: GalleryGridProps) {
+  const activeGroups = useMemo(
+    () => groups.filter((group) => group.images.length > 0),
+    [groups]
+  );
+
+  const allImages = useMemo(
+    () => activeGroups.flatMap((group) => group.images),
+    [activeGroups]
+  );
+
+  const imageIndexBySrc = useMemo(() => {
+    const map = new Map<string, number>();
+    allImages.forEach((image, index) => map.set(image.src, index));
+    return map;
+  }, [allImages]);
+
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const close = useCallback(() => setActiveIndex(null), []);
 
   const showPrev = useCallback(() => {
     setActiveIndex((i) =>
-      i === null ? null : (i - 1 + images.length) % images.length
+      i === null ? null : (i - 1 + allImages.length) % allImages.length
     );
-  }, [images.length]);
+  }, [allImages.length]);
 
   const showNext = useCallback(() => {
-    setActiveIndex((i) => (i === null ? null : (i + 1) % images.length));
-  }, [images.length]);
+    setActiveIndex((i) =>
+      i === null ? null : (i + 1) % allImages.length
+    );
+  }, [allImages.length]);
 
   useEffect(() => {
     if (activeIndex === null) return;
@@ -41,30 +85,38 @@ export function GalleryGrid({ images }: GalleryGridProps) {
     };
   }, [activeIndex, close, showPrev, showNext]);
 
-  if (images.length === 0) {
+  if (allImages.length === 0) {
     return <EmptyGalleryState />;
   }
 
-  const activeImage = activeIndex !== null ? images[activeIndex] : null;
+  const activeImage = activeIndex !== null ? allImages[activeIndex] : null;
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {images.map((image, index) => (
-          <button
-            key={image.src}
-            type="button"
-            onClick={() => setActiveIndex(index)}
-            className="group relative aspect-square overflow-hidden rounded-xl border border-sage/30 shadow-[0_2px_12px_rgba(168,197,160,0.15)] transition-shadow hover:shadow-[0_4px_20px_rgba(168,197,160,0.3)] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/50"
-          >
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 640px) 45vw, 220px"
-            />
-          </button>
+      <div className="space-y-10">
+        {activeGroups.map((group) => (
+          <section key={group.id} aria-labelledby={`gallery-${group.id}`}>
+            <h2
+              id={`gallery-${group.id}`}
+              className="mb-1 text-lg font-bold text-forest sm:text-xl"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              {group.title}
+            </h2>
+            <p className="mb-4 text-sm leading-relaxed text-forest/65">
+              {group.description}
+            </p>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {group.images.map((image) => (
+                <ImageTile
+                  key={image.src}
+                  image={image}
+                  index={imageIndexBySrc.get(image.src) ?? 0}
+                  onOpen={setActiveIndex}
+                />
+              ))}
+            </div>
+          </section>
         ))}
       </div>
 
@@ -85,7 +137,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
             ×
           </button>
 
-          {images.length > 1 && (
+          {allImages.length > 1 && (
             <>
               <button
                 type="button"

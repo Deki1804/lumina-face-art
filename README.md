@@ -48,19 +48,51 @@ Nakon promjene kontakta, ručno ažuriraj i **`public/contact/lumina.vcf`**.
 
 ## Kako dodati slike u galeriju
 
-1. Kopiraj slike u `public/images/gallery/`
-2. Nazovi ih npr. `rodjendan-001.jpg`, `leptir-001.jpg`, `vila-001.jpg`
+Galerija je podijeljena u tri kategorije (folder-based, bez admin panela):
+
+| Folder | Kategorija |
+|---|---|
+| `public/images/gallery/rodjendani/` | Rođendani |
+| `public/images/gallery/eventi/` | Eventi |
+| `public/images/gallery/motivi/` | Motivi |
+
+### Za dodavanje slika
+
+1. Kopiraj slike u odgovarajući folder:
+   - `public/images/gallery/rodjendani/`
+   - `public/images/gallery/eventi/`
+   - `public/images/gallery/motivi/`
+
+2. Nazovi ih redoslijedom kojim želiš:
+   - `001.jpg`
+   - `002.jpg`
+   - `003.jpg`
+
 3. Pokreni:
 
 ```bash
 npm run gallery
 ```
 
-4. Commit i deploy
+4. Provjeri:
+
+```bash
+npm run dev
+```
+
+5. Commit + push:
+
+```bash
+git add public/images/gallery/ lib/gallery.ts
+git commit -m "Add gallery images"
+git push
+```
 
 Podržani formati: `.jpg`, `.jpeg`, `.png`, `.webp`
 
-Ako nema slika, galerija prikazuje elegantan empty state — stranica se ne ruši.
+Skripta `npm run gallery` generira `lib/gallery.ts` s kategorijama i sortira slike po imenu unutar svake kategorije. Prazne kategorije se preskaču na stranici.
+
+Ako nema slika ni u jednoj kategoriji, galerija prikazuje elegantan empty state — stranica se ne ruši.
 
 ---
 
@@ -157,7 +189,9 @@ Format je optimiziran za iPhone i Android (UTF-8, vCard 3.0).
 | `public/images/favicon-source.png` | Izvorna favicon slika (L monogram) |
 | `public/images/card-front.png` | Referenca — prednja vizitka |
 | `public/images/card-back.png` | Referenca — stražnja vizitka |
-| `public/images/gallery/` | Folder za slike galerije |
+| `public/images/gallery/rodjendani/` | Rođendani — slike galerije |
+| `public/images/gallery/eventi/` | Eventi — slike galerije |
+| `public/images/gallery/motivi/` | Motivi — slike galerije |
 | `public/images/qr-code.png` | QR kod za print (vizitka) |
 | `public/images/qr-code.svg` | QR kod vector |
 
@@ -182,7 +216,7 @@ components/
   LogoEmblem.tsx        — kružni logo emblem
 lib/
   profile.ts            — svi kontakt podaci
-  gallery.ts            — popis slika (generira npm run gallery)
+  gallery.ts            — kategorije i slike (generira npm run gallery)
 public/
   images/
   contact/lumina.vcf    — vCard za spremanje kontakta
@@ -199,5 +233,5 @@ scripts/
 |---|---|---|
 | Website URL | `lib/profile.ts` → `websiteUrl` | TODO nakon deploya |
 | Website URL | `public/contact/lumina.vcf` → `URL:` | TODO nakon deploya |
-| Galerija slike | `public/images/gallery/` | Prazno — empty state |
+| Galerija slike | `public/images/gallery/*/` | Prazno — empty state |
 | QR kod | Fizička vizitka | `public/images/qr-code.png` |

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GalleryGrid } from "@/components/GalleryGrid";
 import { Footer } from "@/components/Footer";
 import { LogoEmblem } from "@/components/LogoEmblem";
-import { galleryImages } from "@/lib/gallery";
+import { galleryGroups } from "@/lib/gallery";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ export default function GalleryPage() {
         </header>
 
         <section className="px-5 py-6">
-          <GalleryGrid images={galleryImages} />
+          <GalleryGrid groups={galleryGroups} />
         </section>
 
         <div className="px-5 pb-6 text-center">
