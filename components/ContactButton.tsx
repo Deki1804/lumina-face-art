@@ -43,6 +43,7 @@ const contactActions: ContactAction[] = [
     href: `mailto:${profile.email}`,
     icon: "✉️",
     variant: "secondary",
+    fullWidth: true,
   },
   {
     label: "Spremi kontakt",
