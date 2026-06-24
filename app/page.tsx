@@ -1,4 +1,5 @@
 import { ContactButtons } from "@/components/ContactButton";
+import { ConsentSection } from "@/components/ConsentSection";
 import { Footer } from "@/components/Footer";
 import { GalleryPreview } from "@/components/GalleryPreview";
 import { Hero } from "@/components/Hero";
@@ -11,6 +12,7 @@ export default function HomePage() {
       <div className="relative z-10 mx-auto max-w-lg">
         <Hero />
         <ContactButtons />
+        <ConsentSection />
 
         <div className="gold-line mx-auto my-2 w-32 opacity-60" />
 

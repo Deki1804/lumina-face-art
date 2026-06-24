@@ -15,6 +15,12 @@ export const profile = {
   location: "Umag / Istra, Hrvatska",
   websiteUrl: "https://luminafaceart.vercel.app",
   vcardPath: "/contact/lumina.vcf",
+
+  /** Online privola za fotografije — Google Form vlasnice */
+  consentEnabled: true,
+  // Public viewform link (ne edit link). Za produkciju zamijeni Melitinom kopijom.
+  consentFormUrl:
+    "https://docs.google.com/forms/d/e/1FAIpQLSf4N5YvGktmdkXY7V8khUXLPAMv5bMKa2C4UK0HAF6qAxzyiw/viewform",
 } as const;
 
 export const services = [

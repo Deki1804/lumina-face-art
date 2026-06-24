@@ -96,6 +96,76 @@ Ako nema slika ni u jednoj kategoriji, galerija prikazuje elegantan empty state 
 
 ---
 
+## Online privola za fotografije
+
+Za početak se koristi **Google Forms** — nema vlastite baze, backenda ni spremanja osobnih podataka u aplikaciji. Stranica samo vodi korisnika na Google obrazac vlasnice.
+
+Link se postavlja u **`lib/profile.ts`**:
+
+```ts
+consentEnabled: true,
+consentFormUrl: "https://docs.google.com/forms/d/e/.../viewform",
+```
+
+`consentFormUrl` mora biti **javni link za ispunjavanje** (public/share link), ne privatni edit link.
+
+Dok link nije postavljen (`TODO_GOOGLE_FORM_URL`), stranica `/privola` prikazuje poruku da je privola u pripremi.
+
+### Kako napraviti Google Form
+
+1. Otvori [forms.google.com](https://forms.google.com) na Google računu vlasnice.
+2. Napravi novi obrazac.
+3. Naziv obrasca: **Privola za objavu fotografija — LUMINA Face Art**
+
+4. Predložena pitanja:
+
+- Ime i prezime roditelja/skrbnika
+- Ime i prezime djeteta
+- Kontakt roditelja/skrbnika (mobitel ili e-mail)
+- Datum događaja
+- Naziv događaja / rođendana
+- Dopuštam fotografiranje oslikavanja lica — Odgovori: Da / Ne
+- Dopuštam objavu fotografija na Lumina web stranici — Odgovori: Da / Ne
+- Dopuštam objavu fotografija na Instagram/Facebook profilu Lumina Face Art — Odgovori: Da / Ne
+- Dopuštam objavu fotografija na kojima je lice djeteta prepoznatljivo — Odgovori: Da / Ne
+- Dopuštam samo objavu detalja oslikavanja bez prepoznatljivog lica — Odgovori: Da / Ne
+- Napomena roditelja/skrbnika
+- Potvrđujem da sam roditelj/skrbnik navedenog djeteta — Checkbox: Da, potvrđujem
+
+Za odrasle osobe može se koristiti isti obrazac ili kasnije napraviti poseban obrazac.
+
+5. U Google Formsu otvori tab **Responses / Odgovori** i poveži ga s Google Sheets tablicom.
+6. Kopiraj **public/share link** forme.
+7. Zalijepi taj link u `lib/profile.ts` kao `consentFormUrl`.
+8. Commit + push.
+9. Vercel će automatski redeployati stranicu.
+
+**Napomena:** Nemoj spremati odgovore u ovaj Next.js projekt. Odgovori i osobni podaci moraju ostati u Google Formsu/Sheetsu vlasnice.
+
+### Automatsko kreiranje forme (Google Apps Script)
+
+U repou postoji gotova skripta: **`scripts/create-lumina-consent-form.gs`**
+
+**Ne treba** tražiti "Google Forms API" u Services (+) meniju — na mnogim računima ga nema.
+
+Umjesto toga **jednom** uključi API u Google Cloudu:
+
+1. Apps Script → ⚙️ **Project settings** → kopiraj **Project number**
+2. Otvori: [Google Forms API — Enable](https://console.cloud.google.com/apis/library/forms.googleapis.com) (odaberi isti GCP projekt)
+3. Klikni **ENABLE** / **OMOGUĆI**
+
+Zatim:
+
+1. Otvori [script.google.com](https://script.google.com) (Google račun vlasnice)
+2. **New project** → zalijepi kod iz `scripts/create-lumina-consent-form.gs`
+3. **Run** → `createLuminaConsentForm` → odobri dozvole
+4. **View → Logs** → kopiraj **Published URL**
+5. Zalijepi u `lib/profile.ts` → `consentFormUrl` → commit + push
+
+Ako API i dalje ne radi, pokreni `luminaConsentFormManualGuide` — ispisuje korake za ručno kreiranje forme na forms.google.com (~10 min).
+
+---
+
 ## Kako deployati na Vercel
 
 1. Pushaj repo na GitHub
@@ -203,11 +273,13 @@ Format je optimiziran za iPhone i Android (UTF-8, vCard 3.0).
 app/
   page.tsx              — glavna landing stranica
   gallery/page.tsx      — galerija radova
+  privola/page.tsx      — online privola za fotografije
   layout.tsx            — metadata i layout
   globals.css           — brand stilovi i ambient pozadina
 components/
   Hero.tsx              — logo i uvod
   ContactButton.tsx     — kontakt gumbi
+  ConsentSection.tsx    — privola za fotografije (početna)
   GalleryPreview.tsx    — preview na početnoj
   GalleryGrid.tsx       — grid + lightbox
   EmptyGalleryState.tsx — empty state galerije
@@ -215,7 +287,8 @@ components/
   Footer.tsx
   LogoEmblem.tsx        — kružni logo emblem
 lib/
-  profile.ts            — svi kontakt podaci
+  profile.ts            — svi kontakt podaci + consentFormUrl
+  consent.ts            — provjera je li Google Form link aktivan
   gallery.ts            — kategorije i slike (generira npm run gallery)
 public/
   images/
@@ -223,6 +296,7 @@ public/
 scripts/
   generate-gallery.mjs  — generira lib/gallery.ts iz foldera slika
   generate-qr.mjs       — generira QR kod za vizitku
+  create-lumina-consent-form.gs — Google Apps Script za kreiranje forme privole
 ```
 
 ---
