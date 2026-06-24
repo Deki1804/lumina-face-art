@@ -13,7 +13,6 @@ export const profile = {
   facebookUrl: "https://facebook.com/luminafaceart",
   whatsappUrl: "https://wa.me/38598304317",
   location: "Umag / Istra, Hrvatska",
-  // TODO: replace after Vercel deploy — stavi pravi production URL
   websiteUrl: "https://luminafaceart.vercel.app",
   vcardPath: "/contact/lumina.vcf",
 } as const;
