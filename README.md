@@ -101,20 +101,34 @@ Nakon promjene napravi novi commit i push — Vercel će automatski redeployati.
 
 ---
 
-## Kako generirati QR kod
+## QR kod (vizitka / NFC)
 
-Nakon što imaš finalni production URL:
+**Production URL:** `https://luminafaceart.vercel.app`
 
-1. Otvori besplatni QR generator, npr. [qr-code-generator.com](https://www.qr-code-generator.com/)
-2. Odaberi **URL** tip
-3. Upiši finalni Vercel URL (npr. `https://lumina-face-art.vercel.app`)
-4. Preuzmi PNG/SVG i stavi na stražnju stranu fizičke vizitke
-5. Isti URL možeš upisati i u NFC tag/karticu
+Generirani QR kodovi (Lumina boje — forest green na cream):
 
-**Kako posjetitelj koristi stranicu (za tebe, ne za stranicu):**
-1. Skenira QR kod ili NFC tag
-2. Otvori digitalnu vizitku
-3. Klikne Nazovi, WhatsApp ili Spremi kontakt
+```bash
+npm run qr
+```
+
+Datoteke:
+
+| Datoteka | Namjena |
+|---|---|
+| `public/images/qr-code.png` | **1200px — za print na vizitku** |
+| `public/images/qr-code-sm.png` | 400px preview |
+| `public/images/qr-code.svg` | Vector (Canva / Illustrator) |
+
+### Kako staviti na vizitku
+
+1. Otvori `qr-code.png` ili `qr-code.svg` u Canva/Photoshop
+2. Stavi na **stražnju stranu** vizitke (umjesto starog okvira)
+3. Preporuka: min. **15–20 mm** širine na printu, s bijelim marginom oko koda
+4. Testiraj skeniranje prije masovnog printa
+
+### NFC tag
+
+Upiši isti URL u NFC tag writer app: `https://luminafaceart.vercel.app`
 
 ---
 
@@ -143,6 +157,8 @@ Format je optimiziran za iPhone i Android (UTF-8, vCard 3.0).
 | `public/images/card-front.png` | Referenca — prednja vizitka |
 | `public/images/card-back.png` | Referenca — stražnja vizitka |
 | `public/images/gallery/` | Folder za slike galerije |
+| `public/images/qr-code.png` | QR kod za print (vizitka) |
+| `public/images/qr-code.svg` | QR kod vector |
 
 ---
 
@@ -171,6 +187,7 @@ public/
   contact/lumina.vcf    — vCard za spremanje kontakta
 scripts/
   generate-gallery.mjs  — generira lib/gallery.ts iz foldera slika
+  generate-qr.mjs       — generira QR kod za vizitku
 ```
 
 ---
@@ -182,4 +199,4 @@ scripts/
 | Website URL | `lib/profile.ts` → `websiteUrl` | TODO nakon deploya |
 | Website URL | `public/contact/lumina.vcf` → `URL:` | TODO nakon deploya |
 | Galerija slike | `public/images/gallery/` | Prazno — empty state |
-| QR kod | Fizička vizitka | Generira se nakon deploya |
+| QR kod | Fizička vizitka | `public/images/qr-code.png` |
